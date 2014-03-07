@@ -3,6 +3,8 @@ fizzy.vim
 
 User auto-completions based on regular expressions -- automate the boring parts of any programming language.
 
+:tv: &nbsp; **[Screencast](https://asciinema.org/a/8035)**
+
 **WIP**.
 
 Installation
