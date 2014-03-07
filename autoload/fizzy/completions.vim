@@ -38,7 +38,7 @@ function! fizzy#completions#get_word() " {{{
         if pattern_column > -1 | break | endif
         let pattern_column = match(line[0 : end_column], '^' . pattern . '\s*$', start_column)
         " If we have a match, make sure it is preceded by a whitespace character.
-        if pattern_column > 0 && line[pattern_column - 1] =~ '\S'
+        if pattern_column > 0 && line[pattern_column - 1] !~ '\s\|(\|)'
           let pattern_column = -1
         endif
       endfor
