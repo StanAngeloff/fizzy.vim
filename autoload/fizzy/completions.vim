@@ -75,56 +75,26 @@ function! fizzy#completions#done() " {{{
   let column = col('.')
   let complete_index = 0
 
-  let inserted = line[max([0, b:fizzy_previous_position - 1]) : column]
+  let inserted = line[
+        \ max([0, b:fizzy_previous_position - 1]) :
+        \ min([column - 2, len(line) - 1])
+        \ ]
   for candidate in b:fizzy_candidates
     if inserted == candidate
+      let position = getpos('.')
       let before = ''
       if b:fizzy_previous_position > 1
         let before = line[0 : b:fizzy_previous_position - 2]
       endif
+
       let complete_options = b:fizzy_arguments[complete_index]
       let complete_lines = call(complete_options['fn'], complete_options['arguments'])
 
-      let position = getpos('.')
-      let move_lines = -1
-      let move_column = -1
+      call setline('.', before . line[column : ])
+      call setpos('.', [position[0], position[1], len(before) + 1, 0])
 
-      call setline('.', before . complete_lines[0] . line[column : ])
-
-      if len(complete_lines) > 1
-        let indent = matchstr(line, '^\s\+')
-        let indented_lines = []
-
-        for append_line in complete_lines[1 : ]
-          if &expandtab
-            let append_line = substitute(append_line, '^\(\t\)\+', '\=repeat(" ", &tabstop * len(submatch(0)))', '')
-          endif
-
-          let append_line = indent . append_line
-
-          let match_column = match(append_line, '\$0')
-          if match_column > -1
-            let move_lines = 1 + len(indented_lines)
-            let move_column = match_column + 1
-            let append_line = (match_column > 1 ? append_line[0 : match_column - 1] : '') . substitute(append_line[match_column + 2 : ], '\s\+$', '', '')
-          else
-            let append_line = substitute(append_line, '\s\+$', '', '')
-          endif
-
-          call add(indented_lines, append_line)
-        endfor
-        call append('.', indented_lines)
-
-        if move_lines == -1 && move_column == -1
-          let move_lines = len(indented_lines)
-          let move_column = 1 + len(indented_lines[len(indented_lines) - 1])
-        endif
-      else
-        let move_lines = 0
-        let move_column = 1 + len(before . complete_lines[0])
-      endif
-
-      call setpos('.', [position[0], position[1] + move_lines, move_column, 0])
+      " Let UltiSnips handle all the heavy lifting.
+      call UltiSnips#Anon(join(complete_lines, "\n"), '', '', 'i')
 
       break
     endif
