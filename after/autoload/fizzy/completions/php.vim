@@ -32,5 +32,5 @@ function! fizzy#completions#php#return_initialized_property(name, value, argumen
 endfunction " }}}
 
 function! fizzy#completions#php#ternary_isset(name, expression1, _1, _2, _3, expression2, ...) " {{{
-  return ['(isset ($' . a:name . a:expression1 . ') ? $' . a:name . a:expression1 . a:expression2 . ' : null)']
+  return ['(isset ($' . a:name . a:expression1 . ') ? $' . a:name . a:expression1 . a:expression2 . ' : ${1:null})$0']
 endfunction " }}}
