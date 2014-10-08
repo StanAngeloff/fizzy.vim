@@ -1,12 +1,12 @@
 setlocal completefunc=fizzy#Complete
 
 let b:fizzy_complete_patterns = [
-      \ { 'title': 'private $\4;',
-      \   'patterns': ['\(p\|prv\|priv\|private\)\(\s\+\(\%(\\\|\h\)[0-9A-Za-z_\\]*\)\)\?\s\+\$\(\h\w*\)\;\?'],
+      \ { 'title': 'private $\2;',
+      \   'patterns': ['\%(p\|prv\|priv\|private\)\%(\s\+\(\%(\\\|\h\)[0-9A-Za-z_\\]*\)\)\?\s\+\$\(\h\w*\)\;\?'],
       \   'fn': 'fizzy#completions#php#private_property' },
       \
-      \ { 'title': 'if (isset ($\1)) { ... }',
-      \   'patterns': ['if\s\+isset\(\(\s\+$\h\w*\(\(->\h\w*\)*\)\)\+\)'],
+      \ { 'title': 'if (isset (\1)) { ... }',
+      \   'patterns': ['if\s\+isset\(\%(\s\+$\h\w*\%(\(->\h\w*\)*\)\)\+\)'],
       \   'fn': 'fizzy#completions#php#if_isset' },
       \
       \ { 'title': 'return $this->\1;',

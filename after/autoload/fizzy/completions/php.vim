@@ -3,7 +3,7 @@ if exists('g:autoloaded_fizzy_completions_php') " {{{
 endif
 let g:autoloaded_fizzy_completions_php = 1 " }}}
 
-function! fizzy#completions#php#private_property(_1, _2, type, name, ...) " {{{
+function! fizzy#completions#php#private_property(type, name, ...) " {{{
   let code = []
   if len(a:type)
     call extend(code, [
